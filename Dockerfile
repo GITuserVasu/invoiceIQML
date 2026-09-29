@@ -11,14 +11,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the Python FastAPI/Uvicorn port
-EXPOSE 8000
-ENV PORT=8000
+EXPOSE 8100
+ENV PORT=8100
 
 # Script to start Ollama, pull model, then start Uvicorn
 RUN echo '#!/bin/bash\n\
 ollama serve &\n\
 sleep 5\n\
-ollama pull llama3\n\
+ollama pull qwen3-vl:4b-instruct-q4_K_M\n\
 uvicorn main:app --host 0.0.0.0 --port $PORT\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
