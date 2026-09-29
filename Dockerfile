@@ -1,8 +1,16 @@
 FROM python:3.11-slim
 
-# Install Ollama and curl
-RUN apt-get update && apt-get install -y curl && \
-    curl -fsSL https://ollama.com | sh
+# Install dependencies needed by Ollama installer
+RUN apt-get update && apt-get install -y \
+    curl \
+    pciutils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and run Ollama install script reliably
+RUN curl -fsSL https://ollama.com/install.sh -o install.sh \
+    && chmod +x install.sh \
+    && ./install.sh \
+    && rm install.sh
 
 WORKDIR /app
 COPY requirements.txt .
