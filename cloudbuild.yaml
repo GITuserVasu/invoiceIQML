@@ -1,0 +1,12 @@
+steps:
+  # Step 1: Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/invoice-iq-ml:$COMMIT_SHA', '.']
+
+  # Step 2: Push the image to Container Registry / Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/invoice-iq-ml:$COMMIT_SHA']
+
+# Tell Cloud Build to use Cloud Logging instead of requiring a custom GCS bucket
+options:
+  logging: CLOUD_LOGGING_ONLY
