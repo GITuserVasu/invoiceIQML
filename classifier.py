@@ -68,7 +68,7 @@ Return ONLY valid JSON — no explanation:
     _gpu_info()
     try:
         resp = requests.post(
-            f"{cfg.ollama_url}/api/generate", json=payload, timeout=120
+            f"{cfg.ollama_url}/api/generate", json=payload, timeout=600
         ).json()
     except Exception as e:
         print(f"[CLASSIFY] Ollama error: {e} - using fallback")

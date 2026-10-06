@@ -52,7 +52,7 @@ def _ocr_segment(segment, prompt: str, cfg: EntityConfig) -> dict:
     }
     try:
         resp = requests.post(
-            f"{cfg.ollama_url}/api/generate", json=payload, timeout=180
+            f"{cfg.ollama_url}/api/generate", json=payload, timeout=900
         ).json()
     except Exception as e:
         print(f"[OCR] Ollama error: {e} - using fallback")
@@ -189,7 +189,7 @@ Return ONLY valid JSON. Use empty string "" for any missing field.
 
     try:
         resp = requests.post(
-            f"{cfg.ollama_url}/api/generate", json=payload, timeout=120
+            f"{cfg.ollama_url}/api/generate", json=payload, timeout=900
         ).json()
         text = resp.get("response", "")
         s = text.index("{")

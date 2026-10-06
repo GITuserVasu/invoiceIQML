@@ -139,7 +139,7 @@ def post_extracted_document(result: ExtractionResult, cfg: EntityConfig) -> dict
                 "x-actor-name": "OCR Service",
                 **backend_headers(),
             },
-            timeout=30,
+            timeout=900,
         )
         response.raise_for_status()
         return response.json()
@@ -210,7 +210,7 @@ def post_extracted_invoice(result: ExtractionResult, cfg: EntityConfig) -> dict:
                 "x-actor-name":  "OCR Service",
                 **backend_headers(),
             },
-            timeout=30,
+            timeout=900,
         )
         resp.raise_for_status()
         return resp.json()
@@ -270,7 +270,7 @@ def post_eway_bill(result: ExtractionResult, cfg: EntityConfig) -> dict:
                 "x-actor-name":  "OCR Service",
                 **backend_headers(),
             },
-            timeout=30,
+            timeout=900,
         )
         resp.raise_for_status()
         return resp.json()

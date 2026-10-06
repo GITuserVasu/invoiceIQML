@@ -173,13 +173,14 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
             if ch.get("channel_key") == "upload":
                 cs = ch.get("connection_settings") or {}
                 cfg.ocr_model = cs.get("ocr_model", cfg.ocr_model)
+                #cfg.ocr_model = "llava"
                 cfg.segment_count = int(cs.get("segment_count", cfg.segment_count))
                 cfg.ollama_url = cs.get("ollama_url", cfg.ollama_url)
-                print("vv1")
-                print(cfg.ocr_model)
-                print("vv2")
-                print(cfg.ollama_url)
-                print("vv3")
+                # print("vv1")
+                # print(cfg.ocr_model)
+                # print("vv2")
+                # print(cfg.ollama_url)
+                # print("vv3")
 
     except Exception as e:
         print(f"[CONFIG] dashboard fetch failed: {e}")

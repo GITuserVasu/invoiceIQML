@@ -81,10 +81,14 @@ class DuplicateDetector:
         existing_hashes = self._fetch_recent_hashes(days=90)
         
         if not existing_hashes:
+            print("vasu -- No existing hashes")
             return None
         
         # Check 1: Exact file match (MD5)
-        for inv in existing_hashes:
+        for inv in existing_hashes['data']:
+            print("File Hash")
+            print(current_hashes['file_hash'])
+            print(inv.get('file_hash'))
             if inv.get('file_hash') == current_hashes['file_hash']:
                 return {
                     'is_duplicate': True,
@@ -98,7 +102,7 @@ class DuplicateDetector:
         # Check 2: Perceptual hash (similar images)
         current_phash = imagehash.hex_to_hash(current_hashes['perceptual_hash'])
         
-        for inv in existing_hashes:
+        for inv in existing_hashes['data']:
             if inv.get('perceptual_hash'):
                 try:
                     stored_phash = imagehash.hex_to_hash(inv['perceptual_hash'])
@@ -125,7 +129,7 @@ class DuplicateDetector:
         # Check 3: Average hash (fallback for heavily processed images)
         current_ahash = imagehash.hex_to_hash(current_hashes['average_hash'])
         
-        for inv in existing_hashes:
+        for inv in existing_hashes['data']:
             if inv.get('average_hash'):
                 try:
                     stored_ahash = imagehash.hex_to_hash(inv['average_hash'])
@@ -147,7 +151,6 @@ class DuplicateDetector:
                     print(f"[WARN] Failed to compare average hash: {e}")
                     continue
         
-        # No duplicates found
         return None
     
     def _file_md5(self, file_path: str) -> str:
@@ -174,8 +177,6 @@ class DuplicateDetector:
                 headers['x-service-token'] = BACKEND_SERVICE_TOKEN
             
             url = f"{self.backend_url}/api/v1/tenants/{self.tenant_id}/entities/{self.entity_id}/invoice-hashes"
-            print("hashes url")
-            print(url)
             response = requests.get(
                 url,
                 params={'days': days},
@@ -185,7 +186,10 @@ class DuplicateDetector:
             
             if response.status_code == 200:
                 data = response.json()
-                return data.get('hashes', [])
+                print("VASU")
+                print(data)
+                # return data.get('hashes', [])
+                return data
             else:
                 print(f"[WARN] Backend returned {response.status_code}: {response.text}")
                 return []
