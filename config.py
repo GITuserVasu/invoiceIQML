@@ -151,12 +151,12 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
     # ── 1. Dashboard: matching policy + intake channels + modules ───────────
     try:
         dash = requests.get(f"{base}/dashboard", headers=backend_headers(), timeout=10).json()
-        # print({base})
-        # print("-vv-")
-        # print(backend_headers())
-        # print("-vv-")
-        # print(dash)
-        # print("-vv-")
+        print({base})
+        print("-vv-")
+        print(backend_headers())
+        print("-vv-")
+        print(dash)
+        print("-vv-")
         cfg.entity_key = dash.get("entity", {}).get("entity_key", entity_id)
 
         mp = dash.get("matchingPolicy") or {}
