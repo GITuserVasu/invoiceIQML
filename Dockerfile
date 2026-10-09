@@ -1,3 +1,11 @@
+FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04
+
+# Expose NVIDIA GPU capabilities to the container
+ENV NVIDIA_VISIBLE_DEVICES=all
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility
+ENV PYTHONUNBUFFERED=1
+
+
 FROM python:3.11-slim
 
 # Install dependencies needed by Ollama installer
