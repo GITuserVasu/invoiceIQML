@@ -174,7 +174,11 @@ class DuplicateDetector:
         try:
             headers = {}
             if BACKEND_SERVICE_TOKEN:
-                headers['x-service-token'] = BACKEND_SERVICE_TOKEN
+            #    headers['x-service-token'] = BACKEND_SERVICE_TOKEN
+                headers = {
+                   "Authorization": f"Bearer {BACKEND_SERVICE_TOKEN}",
+                   "Content-Type": "application/json"
+                  }
             print("vvv")
             print(self.backend_url)
             print(self.tenant_id)
