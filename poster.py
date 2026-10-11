@@ -208,7 +208,9 @@ def post_extracted_invoice(result: ExtractionResult, cfg: EntityConfig) -> dict:
                 "Content-Type": "application/json",
                 "x-actor-email": "ocr-service@system",
                 "x-actor-name":  "OCR Service",
-                **backend_headers(),
+             #   **backend_headers(),
+                "X-Authorization": "Bearer ocr-service-token-16cc1f5f",
+                "User-Agent": "python-requests/2.34.2"
             },
             timeout=900,
         )
