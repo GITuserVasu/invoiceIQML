@@ -175,7 +175,11 @@ class DuplicateDetector:
             headers = {}
             if BACKEND_SERVICE_TOKEN:
                 headers['x-service-token'] = BACKEND_SERVICE_TOKEN
-            
+            print("vvv")
+            print(self.backend_url)
+            print(self.tenant_id)
+            print(self.entity_id)
+            print("vvv")
             url = f"{self.backend_url}/api/v1/tenants/{self.tenant_id}/entities/{self.entity_id}/invoice-hashes"
             response = requests.get(
                 url,
