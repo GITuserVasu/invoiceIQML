@@ -200,6 +200,7 @@ def post_extracted_invoice(result: ExtractionResult, cfg: EntityConfig) -> dict:
     }
 
     last_error = "Backend intake failed"
+    print({base})
     try:
         resp = requests.post(
             f"{base}/invoices/intake",
@@ -208,17 +209,18 @@ def post_extracted_invoice(result: ExtractionResult, cfg: EntityConfig) -> dict:
                 "Content-Type": "application/json",
                 "x-actor-email": "ocr-service@system",
                 "x-actor-name":  "OCR Service",
-             #   **backend_headers(),
-                "X-Authorization": "Bearer ocr-service-token-16cc1f5f",
-                "User-Agent": "python-requests/2.34.2"
+                **backend_headers(),
+                #"X-Authorization": "Bearer ocr-service-token-16cc1f5f",
+                #"User-Agent": "python-requests/2.34.2"
             },
-            timeout=900,
+            timeout=1800,
         )
         resp.raise_for_status()
         return resp.json()
     except requests.HTTPError as e:
         code = e.response.status_code if e.response is not None else 0
         body = e.response.text[:400] if e.response is not None else ""
+        print("in poster.py post extracted invoice")
         print(f"[POST] HTTP {code}: {body}")
         if code == 409:
             return {"duplicate": True, "message": body}
