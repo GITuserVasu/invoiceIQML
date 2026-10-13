@@ -190,7 +190,7 @@ class DuplicateDetector:
                 url,
                 params={'days': days},
                 headers=headers,
-                timeout=10
+                timeout=900
             )
             
             if response.status_code == 200:
