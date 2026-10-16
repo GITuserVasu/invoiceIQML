@@ -131,6 +131,7 @@ def process_image(req: ProcessRequest):
             }
         )
         duplicate_result.source_channel = req.channel_key or "upload"
+        duplicate_result.notes = "duplicate"
         return duplicate_result
     else:
         print(f"[DUPLICATE CHECK] No duplicates found - proceeding with OCR")
@@ -205,6 +206,7 @@ def process_image(req: ProcessRequest):
         result.source_channel = req.channel_key or "upload"
         post_audit(cfg, "document.classified", req.image_path, doc_type,
                    {"skipped": True, "reason": "not_in_allowed_classes"})
+        result.notes = "not_in_allowed_classes"
         return result
 
     # ── 5. Extract header (invoice-level metadata) ───────────────────────────
@@ -242,7 +244,8 @@ def process_image(req: ProcessRequest):
     print(f"[POST] {post_response}")
     post_audit(cfg, "document.extracted", req.image_path, doc_type,
                {"rows": len(result.rows), "confidence": confidence})
-
+    
+    result.notes = "none"
     return result
 
 

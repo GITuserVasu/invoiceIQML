@@ -140,6 +140,7 @@ def extract_table(
         image_path=image_path,
         entity_id=cfg.entity_id,
         tenant_id=cfg.tenant_id,
+        notes = "",
     )
 
 
