@@ -24,7 +24,7 @@ RUN curl -fsSL https://ollama.com/install.sh -o install.sh \
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-pip install google-auth requests
+RUN pip install google-auth requests
 
 COPY . .
 
