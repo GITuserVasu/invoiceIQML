@@ -324,10 +324,12 @@ def post_audit(cfg: EntityConfig, action: str, image_path: str, doc_type: str, m
                     **meta,
                 },
             },
-            **headers=backend_headers(),
-            "Authorization": f"Bearer {token}",
-            "User-Agent": "python-requests/2.34.2",
-            timeout=120,
+           headers={
+                **backend_headers(),
+                "Authorization": f"Bearer {token}",
+                "User-Agent": "python-requests/2.34.2",
+            },
+            timeout=900,
         )
     except Exception:
         pass
