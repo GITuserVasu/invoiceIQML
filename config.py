@@ -161,7 +161,7 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
               backend_headers(),
               "Authorization": f"Bearer {token}",
               "User-Agent": "python-requests/2.34.2",
-          }
+          },
           timeout=120).json()
         print({base})
         print("-vv-")
@@ -205,7 +205,7 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
                 backend_headers(),
                 "Authorization": f"Bearer {token}",
                 "User-Agent": "python-requests/2.34.2",
-            }
+            },
             timeout=10).json()
         mapping = cl.get("mapping") or {}
         cfg.confidence_threshold = float(mapping.get("confidence_threshold_pct", 90))
