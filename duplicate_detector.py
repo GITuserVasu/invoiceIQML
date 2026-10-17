@@ -183,7 +183,7 @@ class DuplicateDetector:
                 #headers['x-service-token'] = BACKEND_SERVICE_TOKEN
                  headers = {
                     "Authorization": f"Bearer {token}",
-                    "User-Agent": "python-requests/2.34.2"
+                    "User-Agent": "python-requests/2.34.2",
                     "x-service-token": BACKEND_SERVICE_TOKEN
                     #"Content-Type": "application/json"
                    }
