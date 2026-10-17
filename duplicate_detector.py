@@ -11,6 +11,8 @@ import imagehash
 from PIL import Image
 import requests
 from typing import Optional, Dict, Any
+from google.auth.transport.requests import Request
+from google.oauth2 import id_token
 
 # Backend URL from environment
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:7070")
@@ -172,14 +174,19 @@ class DuplicateDetector:
             List of invoice records with hashes
         """
         try:
+            # 2. Automatically fetch an OpenID Connect (OIDC) ID token.
+            # The 'audience' must perfectly match the base URL of your target service.
+            auth_req = Request()
+            token = id_token.fetch_id_token(auth_req, audience=target_url)
             headers = {}
             if BACKEND_SERVICE_TOKEN:
-                headers['x-service-token'] = BACKEND_SERVICE_TOKEN
-                # headers = {
-                #    "X-Authorization": f"Bearer {BACKEND_SERVICE_TOKEN}",
-                #    "User-Agent": "python-requests/2.34.2"
-                #    #"Content-Type": "application/json"
-                #   }
+                #headers['x-service-token'] = BACKEND_SERVICE_TOKEN
+                 headers = {
+                    "Authorization": f"Bearer {token}",
+                    "User-Agent": "python-requests/2.34.2"
+                    "x-service-token": {BACKEND_SERVICE_TOKEN}
+                    #"Content-Type": "application/json"
+                   }
             print("vvv")
             print(self.backend_url)
             print(self.tenant_id)
