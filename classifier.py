@@ -13,7 +13,6 @@ import requests
 
 from models import EntityConfig
 
-
 def _encode(img) -> str:
     _, buf = cv2.imencode(".jpg", img)
     return base64.b64encode(buf).decode("utf-8")

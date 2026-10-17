@@ -9,6 +9,9 @@ import os
 import requests
 from typing import Optional
 from models import EntityConfig
+from google.auth.transport.requests import Request
+from google.oauth2 import id_token
+
 
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:7070")
 BACKEND_SERVICE_TOKEN = os.getenv("BACKEND_SERVICE_TOKEN", "ocr-service-token-16cc1f5f")
@@ -147,10 +150,19 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
     """
     base = f"{BACKEND_URL}/api/v1/tenants/{tenant_id}/entities/{entity_id}"
     cfg = EntityConfig(entity_id=entity_id, tenant_id=tenant_id, entity_key=entity_id)
+    auth_req = Request()
+    token = id_token.fetch_id_token(auth_req, audience=BACKEND_URL)
 
     # ── 1. Dashboard: matching policy + intake channels + modules ───────────
     try:
-        dash = requests.get(f"{base}/dashboard", headers=backend_headers(), timeout=10).json()
+        dash = requests.get(
+          f"{base}/dashboard", 
+          headers={
+              backend_headers(),
+              "Authorization": f"Bearer {token}",
+              "User-Agent": "python-requests/2.34.2",
+          }
+          timeout=120).json()
         print({base})
         print("-vv-")
         print(backend_headers())
@@ -187,7 +199,14 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
 
     # ── 2. Classification mapping: allowed classes + per-class prompts ───────
     try:
-        cl = requests.get(f"{base}/classification", headers=backend_headers(), timeout=10).json()
+        cl = requests.get(
+            f"{base}/classification", 
+            headers={
+                backend_headers(),
+                "Authorization": f"Bearer {token}",
+                "User-Agent": "python-requests/2.34.2",
+            }
+            timeout=10).json()
         mapping = cl.get("mapping") or {}
         cfg.confidence_threshold = float(mapping.get("confidence_threshold_pct", 90))
         cfg.fallback_class = mapping.get("fallback_class_key", "manual_review")

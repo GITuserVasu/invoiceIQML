@@ -8,6 +8,8 @@ import json
 import requests
 from models import ExtractionResult, EntityConfig
 from config import backend_headers
+from google.auth.transport.requests import Request
+from google.oauth2 import id_token
 
 BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:7070")
 
@@ -129,6 +131,8 @@ def post_extracted_document(result: ExtractionResult, cfg: EntityConfig) -> dict
         "total_amount": total,
         "line_items": _build_line_items(result),
     }
+    auth_req = Request()
+    token = id_token.fetch_id_token(auth_req, audience=BACKEND_URL)
     try:
         response = requests.post(
             f"{base}/documents/intake",
@@ -138,6 +142,8 @@ def post_extracted_document(result: ExtractionResult, cfg: EntityConfig) -> dict
                 "x-actor-email": "ocr-service@system",
                 "x-actor-name": "OCR Service",
                 **backend_headers(),
+                "Authorization": f"Bearer {token}",
+                "User-Agent": "python-requests/2.34.2",
             },
             timeout=900,
         )
@@ -200,7 +206,9 @@ def post_extracted_invoice(result: ExtractionResult, cfg: EntityConfig) -> dict:
     }
 
     last_error = "Backend intake failed"
-    print({base})
+    #print({base})
+    auth_req = Request()
+    token = id_token.fetch_id_token(auth_req, audience=BACKEND_URL)
     try:
         resp = requests.post(
             f"{base}/invoices/intake",
@@ -210,8 +218,8 @@ def post_extracted_invoice(result: ExtractionResult, cfg: EntityConfig) -> dict:
                 "x-actor-email": "ocr-service@system",
                 "x-actor-name":  "OCR Service",
                 **backend_headers(),
-                #"X-Authorization": "Bearer ocr-service-token-16cc1f5f",
-                #"User-Agent": "python-requests/2.34.2"
+                "Authorization": "Bearer {token}",
+                "User-Agent": "python-requests/2.34.2"
             },
             timeout=1800,
         )
@@ -264,6 +272,8 @@ def post_eway_bill(result: ExtractionResult, cfg: EntityConfig) -> dict:
     }
 
     last_error = "Backend E-Way Bill intake failed"
+    auth_req = Request()
+    token = id_token.fetch_id_token(auth_req, audience=BACKEND_URL)
     try:
         resp = requests.post(
             f"{base}/eway-bills/intake",
@@ -273,6 +283,8 @@ def post_eway_bill(result: ExtractionResult, cfg: EntityConfig) -> dict:
                 "x-actor-email": "ocr-service@system",
                 "x-actor-name":  "OCR Service",
                 **backend_headers(),
+                "Authorization": f"Bearer {token}",
+                "User-Agent": "python-requests/2.34.2",
             },
             timeout=900,
         )
@@ -293,6 +305,8 @@ def post_eway_bill(result: ExtractionResult, cfg: EntityConfig) -> dict:
 def post_audit(cfg: EntityConfig, action: str, image_path: str, doc_type: str, meta: dict = {}) -> None:
     """Write an audit event for the OCR processing action."""
     base = f"{BACKEND_URL}/api/v1/tenants/{cfg.tenant_id}"
+    auth_req = Request()
+    token = id_token.fetch_id_token(auth_req, audience=BACKEND_URL)
     try:
         requests.post(
             f"{base}/audit-events",
@@ -311,7 +325,9 @@ def post_audit(cfg: EntityConfig, action: str, image_path: str, doc_type: str, m
                 },
             },
             headers=backend_headers(),
-            timeout=10,
+            "Authorization": f"Bearer {token}",
+            "User-Agent": "python-requests/2.34.2",
+            timeout=120,
         )
     except Exception:
         pass

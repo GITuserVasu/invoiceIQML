@@ -177,7 +177,7 @@ class DuplicateDetector:
             # 2. Automatically fetch an OpenID Connect (OIDC) ID token.
             # The 'audience' must perfectly match the base URL of your target service.
             auth_req = Request()
-            token = id_token.fetch_id_token(auth_req, audience=target_url)
+            token = id_token.fetch_id_token(auth_req, audience=BACKEND_URL)
             headers = {}
             if BACKEND_SERVICE_TOKEN:
                 #headers['x-service-token'] = BACKEND_SERVICE_TOKEN
