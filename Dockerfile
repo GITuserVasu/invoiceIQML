@@ -37,8 +37,7 @@ RUN echo '#!/bin/bash\n\
 ollama serve &\n\
 #sleep 5\n\
 until curl -s http://localhost:11434/ > /dev/null; do sleep 1; done\n\
-#ollama pull qwen3-vl:4b-instruct-q4_K_M\n\
-ollama pull qwen2.5:1.5b\n\
+ollama pull qwen3-vl:4b-instruct-q4_K_M\n\
 uvicorn main:app --host 0.0.0.0 --port $PORT\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 

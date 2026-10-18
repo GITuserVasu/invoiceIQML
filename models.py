@@ -41,8 +41,7 @@ class EntityConfig(BaseModel):
     classification_classes: List[Dict[str, Any]] = []
     confidence_threshold: float = 90.0
     fallback_class: str = "manual_review"
-    #ocr_model: str = "qwen3-vl:4b-instruct-q4_K_M"
-    ocr_model: str = "qwen2.5:1.5b"
+    ocr_model: str = "qwen3-vl:4b-instruct-q4_K_M"
     segment_count: int = 3
     ollama_url: str = os.getenv("OLLAMA_URL", "")  # Empty = use fallback extraction
     allowed_ocr_classes: List[str] = []
