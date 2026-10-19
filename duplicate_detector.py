@@ -11,6 +11,7 @@ import imagehash
 from PIL import Image
 import requests
 from typing import Optional, Dict, Any
+from config import backend_headers
 from google.auth.transport.requests import Request
 from google.oauth2 import id_token
 
@@ -184,7 +185,8 @@ class DuplicateDetector:
                  headers = {
                     "Authorization": f"Bearer {token}",
                     "User-Agent": "python-requests/2.34.2",
-                    "x-service-token": BACKEND_SERVICE_TOKEN
+                    **backend_headers()
+                    # "x-service-token": "ocr-service-token-16cc1f5f"
                     #"Content-Type": "application/json"
                    }
             print("vvv")
