@@ -32,6 +32,7 @@ class DuplicateDetector:
     
     def __init__(self, tenant_id: str, entity_id: str):
         self.tenant_id = tenant_id
+        # self.entity_id = entity_id
         self.entity_id = entity_id
         self.backend_url = BACKEND_URL
     
@@ -192,6 +193,7 @@ class DuplicateDetector:
             print("vvv")
             print(self.backend_url)
             print(self.tenant_id)
+            self.entity_id = "VJ-TEST-001"
             print(self.entity_id)
             print("vvv")
             url = f"{self.backend_url}/api/v1/tenants/{self.tenant_id}/entities/{self.entity_id}/invoice-hashes"
