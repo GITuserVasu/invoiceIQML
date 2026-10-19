@@ -183,8 +183,8 @@ class DuplicateDetector:
             if BACKEND_SERVICE_TOKEN:
                 #headers['x-service-token'] = BACKEND_SERVICE_TOKEN
                  headers = {
-                    "Authorization": f"Bearer {token}",
-                    "User-Agent": "python-requests/2.34.2",
+                    # "Authorization": f"Bearer {token}",
+                    # "User-Agent": "python-requests/2.34.2",
                     **backend_headers()
                     # "x-service-token": "ocr-service-token-16cc1f5f"
                     #"Content-Type": "application/json"

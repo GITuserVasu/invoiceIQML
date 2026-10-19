@@ -158,9 +158,9 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
         dash = requests.get(
           f"{base}/dashboard", 
           headers={
-              **backend_headers(),
-              "Authorization": f"Bearer {token}",
-              "User-Agent": "python-requests/2.34.2",
+              **backend_headers()
+              # "Authorization": f"Bearer {token}",
+              # "User-Agent": "python-requests/2.34.2",
           },
           timeout=120).json()
         print({base})
@@ -202,9 +202,9 @@ def fetch_entity_config(tenant_id: str, entity_id: str) -> EntityConfig:
         cl = requests.get(
             f"{base}/classification", 
             headers={
-                **backend_headers(),
-                "Authorization": f"Bearer {token}",
-                "User-Agent": "python-requests/2.34.2",
+                **backend_headers()
+                # "Authorization": f"Bearer {token}",
+                # "User-Agent": "python-requests/2.34.2",
             },
             timeout=10).json()
         mapping = cl.get("mapping") or {}
